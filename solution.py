@@ -1,3 +1,6 @@
+## File: solution.py
+## Name: Luis Grados
+
 # import socket module
 from socket import *
 # In order to terminate the program
