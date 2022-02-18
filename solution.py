@@ -10,27 +10,32 @@ import sys
 def webServer(port=13331):
   serverSocket = socket(AF_INET, SOCK_STREAM)
   #Prepare a server socket
-  serverSocket.bind(("", port))
-  #Fill in start
+  serverSocket.bind(("192.168.1.20", port))
 
-  #Fill in end
+  #Creates socket to listen
+  serverSocket.listen(5)
+
 
   while True:
     #Establish the connection
     #print('Ready to serve...')
-    connectionSocket, addr = #Fill in start      #Fill in end
+    
+    #Accept incoming requests
+    connectionSocket, addr = serverSocket.accept()
+ 
     try:
 
       try:
-        message = #Fill in start    #Fill in end
+        #Define bits of data to receive
+        message = connectionSocket.recv(1024)
         filename = message.split()[1]
         f = open(filename[1:])
-        outputdata = #Fill in start     #Fill in end
+
+        #Display file contents
+        outputdata = f.read()
         
         #Send one HTTP header line into socket.
-        #Fill in start
-
-        #Fill in end
+        connectionSocket.send("HTTP/1.1 200 OK\r\n\r\n".encode())
 
         #Send the content of the requested file to the client
         for i in range(0, len(outputdata)):
@@ -40,15 +45,11 @@ def webServer(port=13331):
         connectionSocket.close()
       except IOError:
         # Send response message for file not found (404)
-        #Fill in start
-
-        #Fill in end
-
+        connectionSocket.send("HTTP/1.1 404 Not Found\r\n\r\n".encode())
+        connectionSocket.send("<html><head></head><body><h1>404 Not Found</h1></body></html>\r\n".encode())
 
         #Close client socket
-        #Fill in start
-
-        #Fill in end
+        connectionSocket.close()
 
     except (ConnectionResetError, BrokenPipeError):
       pass
